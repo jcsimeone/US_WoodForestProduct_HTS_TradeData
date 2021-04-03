@@ -1,6 +1,6 @@
 # Work on US import data of wood and forest products, by value and quantity
 # Simeone Consulting, LLC
-# May 2020
+
 
 library(tidyr)
 #library(fuzzyjoin)
