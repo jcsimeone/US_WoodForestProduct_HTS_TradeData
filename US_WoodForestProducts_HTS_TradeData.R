@@ -10,7 +10,7 @@ library(readxl)
 #library(stringr)
 #library(lubridate)
 
-dataPath <- "C:\\Users\\simeo\\Desktop\\HTS_LaceyActDeclarationForm_Analysis\\"
+dataPath <- "C:\\Users\\simeo\\Desktop\\US_WoodForestProducts_Imports_HTS\\"
 
 #confirm or pre-process raw data file downloaded or recieved from US Census or International 
 #Trade Commission (ITC) so that the column headings have no spaces 
@@ -154,10 +154,15 @@ fwrite(htstradedata,
 
 
 ##### Work with combined trade data, joined with Lacey Act declaration requirements #####
+##### if bringing in already produced combined dataset to work with, then...#####
+
+htstradedata <- fread(paste0(dataPath, "OutputFiles\\htstradedata_laceydeclarations.csv"))
+
 
 #summarize yearly totals by hts10, with commodity descrip, retaining dec_req split
-yrlysum_htstradedata <- htstradedata %>%
-  group_by(year, dec_req, descriptn, HTS10, HTS8, HTS6, HTS4, HTS2, ExclusivelyContainsWood, ImplementationPhase, DeclarationFormRequiredBeginningDate) %>%
+yrlysum_htstradedata_china <- htstradedata %>%
+  filter(country == "China") %>%
+  group_by(country, year, dec_req, descriptn, HTS10, HTS8, HTS6, HTS4, HTS2, ExclusivelyContainsWood, ImplementationPhase, DeclarationFormRequiredBeginningDate) %>%
   summarize(tot_gen_val_by_hts10 = sum(gen_val_mo), 
             tot_con_val_by_hts10 = sum(con_val_mo)) %>%
   ungroup() %>%
@@ -169,12 +174,13 @@ yrlysum_htstradedata <- htstradedata %>%
                                           substr(HTS10,5,6), ".",
                                           substr(HTS10,7,10)))
 
+
 #write out file for all 2019 HTS10
-yrlysum_htstradedata_2019 <- yrlysum_htstradedata %>%
+yrlysum_htstradedata_china_2019 <- yrlysum_htstradedata_china %>%
   filter(year == "2019") %>%
   arrange(desc(tot_gen_val_by_hts10))
 
-fwrite(yrlysum_htstradedata_2019, paste0(dataPath, "OutputFiles\\yrlysum_htstradedata_2019.csv"), dateTimeAs = "write.csv")
+fwrite(yrlysum_htstradedata_china_2019, paste0(dataPath, "OutputFiles\\yrlysum_china_htstradedata_2019.csv"), dateTimeAs = "write.csv")
 
 
 
