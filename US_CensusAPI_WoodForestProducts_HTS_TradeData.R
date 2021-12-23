@@ -34,15 +34,26 @@ head(intltrade_vars)
 
 ch44_imports <- getCensus(
   name = "timeseries/intltrade/imports/hs",
-  vars = c("MONTH" , "I_COMMODITY_LDESC", "CTY_NAME","GEN_VAL_MO", "CON_VAL_MO"),
+  vars = c("MONTH" , "I_COMMODITY_LDESC", "CTY_NAME","DISTRICT","DIST_NAME","GEN_VAL_MO", "CON_VAL_MO", "GEN_QY1_MO	", "CON_QY1_MO", "UNIT_QY1"),
   #time = "from+2020-01+to+2021-06", 
   YEAR = "2021", 
   COMM_LVL = "HS10", 
   I_COMMODITY = "44*")
 head(ch44_imports)
 
+
+ch44_imports_all_rows <- getCensus(
+  name = "timeseries/intltrade/imports/hs",
+  vars = c("MONTH", "I_COMMODITY_LDESC","DISTRICT","CTY_CODE","CTY_NAME","DIST_NAME","GEN_VAL_MO", "CON_VAL_MO","GEN_QY1_MO","CON_QY1_MO","UNIT_QY1", "QTY_1_MO", "QTY_1_MO_FLAG"),
+  #time = "from+2020-01+to+2021-06", 
+  YEAR = "2021", 
+  COMM_LVL = "HS10", 
+  I_COMMODITY = "4403*")
+head(ch44_imports_all_rows)
+
 listCensusMetadata(
   name = "timeseries/intltrade/imports/hs", 
   type = "geography")
 
+########Loop through to call batches of all data in Ch. 44
 
