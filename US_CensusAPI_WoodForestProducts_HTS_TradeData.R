@@ -107,14 +107,11 @@ for(year in 2019:2021){
     filter((substr(CTY_CODE, start = 2, stop = 4) != "XXX")) %>%
     filter(GEN_VAL_MO != 0 | CON_VAL_MO != 0)
   
-  
   if(i==1){
     compiled <- df_batch_raw
   }else{
     compiled <- rbind(compiled, df_batch_raw)
   }
-  
-  
 }
 
 
