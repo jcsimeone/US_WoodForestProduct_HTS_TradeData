@@ -123,6 +123,7 @@ for(hts in wood_hts_to_query$HS){
 
 }
 
+fwrite(compiled, paste0(dataPath, "US_imports_wood_2019_2020_2021.csv"))
 
 
 
