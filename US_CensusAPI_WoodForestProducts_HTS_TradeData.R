@@ -11,6 +11,8 @@ Sys.getenv("CENSUS_KEY")
 
 dataPath <- "C:\\Users\\simeo\\Desktop\\US_WoodForestProducts_Imports_HTS\\"
 
+wood_hts_to_query <- read.csv(paste0(dataPath, "WoodForestProducts_HTS_to_Query.csv"), stringsAsFactors = FALSE)
+
 library(tidyr)
 #library(fuzzyjoin)
 library(data.table)
@@ -61,7 +63,7 @@ library(janitor)
 
 
 ######### Test calling Census api through R (using httr) and convert matrix to data frame w/ first row as column headings
-url <-"https://api.census.gov/data/timeseries/intltrade/imports/hs?key=6a6b224a3057a174ebd5cd67109f2f4800d270a9&get=MONTH%2CI_COMMODITY_LDESC%2CDISTRICT%2CCTY_CODE%2CCTY_NAME%2CDIST_NAME%2CGEN_VAL_MO%2CCON_VAL_MO%2CGEN_QY1_MO%2CCON_QY1_MO%2CUNIT_QY1&YEAR=2021&COMM_LVL=HS10&I_COMMODITY=44%2A"
+url <-"https://api.census.gov/data/timeseries/intltrade/imports/hs?key=6a6b224a3057a174ebd5cd67109f2f4800d270a9&get=MONTH%2CI_COMMODITY_LDESC%2CDISTRICT%2CCTY_CODE%2CCTY_NAME%2CDIST_NAME%2CGEN_VAL_MO%2CCON_VAL_MO%2CGEN_QY1_MO%2CCON_QY1_MO%2CUNIT_QY1&YEAR=2021&COMM_LVL=HS10&I_COMMODITY=9620005500%2A"
 batch <- httr::GET(url)
 #cont_raw <- httr::content(batch)
 #str(cont_raw, max.level = 3, list.len = 4)
@@ -81,38 +83,46 @@ df_batch_raw_col <- row_to_names(df_batch_raw, row_number =1)
 compiled <- data.frame()
 i=0
 
-for(year in 2019:2021){
-  print(year)
-  i=i+1
+for(hts in wood_hts_to_query$HS){
+ print(hts)
   
-  ######### Batch to call api and convert matrix to data frame w/ first row as column headings
-  url <- paste0("https://api.census.gov/data/timeseries/intltrade/imports/hs?key=6a6b224a3057a174ebd5cd67109f2f4800d270a9&get=MONTH%2CI_COMMODITY_LDESC%2CDISTRICT%2CCTY_CODE%2CCTY_NAME%2CDIST_NAME%2CGEN_VAL_MO%2CCON_VAL_MO%2CGEN_QY1_MO%2CCON_QY1_MO%2CUNIT_QY1&",
-  "YEAR=",year,"&COMM_LVL=HS10&I_COMMODITY=44%2A")
-  print(url)
-  batch <- httr::GET(url)
-  #cont_raw <- httr::content(batch)
-  #str(cont_raw, max.level = 3, list.len = 4)
-  
-  batch_raw <- jsonlite::fromJSON(rawToChar(batch$content))
-  df_batch_raw <- as.data.frame(batch_raw) %>%
-    row_to_names(row_number=1) %>%
-    mutate_if(is.factor, as.character) %>%
-    mutate(GEN_VAL_MO = as.numeric(GEN_VAL_MO), 
-           CON_VAL_MO = as.numeric(CON_VAL_MO), 
-           GEN_QY1_MO = as.numeric(GEN_QY1_MO), 
-           CON_QY1_MO = as.numeric(CON_QY1_MO)) %>%
-    filter(DISTRICT != "-") %>%
-    filter(CTY_CODE != "-") %>%
-    filter((substr(CTY_CODE, start = 1, stop = 2) != "00")) %>%
-    filter((substr(CTY_CODE, start = 2, stop = 4) != "XXX")) %>%
-    filter(GEN_VAL_MO != 0 | CON_VAL_MO != 0)
-  
-  if(i==1){
-    compiled <- df_batch_raw
-  }else{
-    compiled <- rbind(compiled, df_batch_raw)
+  #inner loop cycling through years 
+  for(year in 2019:2021){
+    print(year)
+    i=i+1
+    
+    ######### Batch to call api and convert matrix to data frame w/ first row as column headings
+    url <- paste0("https://api.census.gov/data/timeseries/intltrade/imports/hs?key=6a6b224a3057a174ebd5cd67109f2f4800d270a9&get=MONTH%2CI_COMMODITY_LDESC%2CDISTRICT%2CCTY_CODE%2CCTY_NAME%2CDIST_NAME%2CGEN_VAL_MO%2CCON_VAL_MO%2CGEN_QY1_MO%2CCON_QY1_MO%2CUNIT_QY1&",
+                  "YEAR=",year,"&COMM_LVL=HS10&I_COMMODITY=",hts,"%2A")
+    print(url)
+    batch <- httr::GET(url)
+    #cont_raw <- httr::content(batch)
+    #str(cont_raw, max.level = 3, list.len = 4)
+    
+    batch_raw <- jsonlite::fromJSON(rawToChar(batch$content))
+    df_batch_raw <- as.data.frame(batch_raw) %>%
+      row_to_names(row_number=1) %>%
+      mutate_if(is.factor, as.character) %>%
+      mutate(GEN_VAL_MO = as.numeric(GEN_VAL_MO), 
+             CON_VAL_MO = as.numeric(CON_VAL_MO), 
+             GEN_QY1_MO = as.numeric(GEN_QY1_MO), 
+             CON_QY1_MO = as.numeric(CON_QY1_MO)) %>%
+      filter(DISTRICT != "-") %>%
+      filter(CTY_CODE != "-") %>%
+      filter((substr(CTY_CODE, start = 1, stop = 2) != "00")) %>%
+      filter((substr(CTY_CODE, start = 2, stop = 4) != "XXX")) %>%
+      filter(GEN_VAL_MO != 0 | CON_VAL_MO != 0)
+    
+    if(i==1){
+      compiled <- df_batch_raw
+    }else{
+      compiled <- rbind(compiled, df_batch_raw)
+    }
+    
   }
+
 }
+
 
 
 
