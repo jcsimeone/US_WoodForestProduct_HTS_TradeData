@@ -15,6 +15,9 @@ dataPath <- "C:\\Users\\simeo\\Desktop\\US_WoodForestProducts_Imports_HTS\\"
 
 
 ########### Working with most updated combined data ##############  
+#read in raw US Census data
+Wood_HTS_2015_2016_2017_2018_2019_2020_2021 <- read.csv(paste0(dataPath, "OutputFiles\\Wood_HTS_2015_2016_2017_2018_2019_2020_2021_27Dec2021.csv"), stringsAsFactors = FALSE)
+
 #read in list of codes to analyze (codes requiring PPQ 505 forms)
 laceydeclarations <- read.csv(paste0(dataPath, "HTS_Chapters_Requiring_LaceyDeclarationForm_21May2020.csv"), stringsAsFactors = FALSE) %>%
   mutate(DeclarationFormRequiredBeginningDate = as.POSIXct(DeclarationFormRequiredBeginningDate, format = "%m/%d/%Y"), 
