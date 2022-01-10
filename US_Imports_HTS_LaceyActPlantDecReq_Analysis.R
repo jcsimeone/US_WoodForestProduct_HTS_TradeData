@@ -128,7 +128,7 @@ fwrite(htstradedata,
 ##### Work with combined trade data, joined with Lacey Act declaration requirements #####
 ##### if bringing in already produced combined dataset to work with, then...#####
 
-htstradedata <- fread(paste0(dataPath, "OutputFiles\\htstradedata_laceydeclarations.csv"))
+htstradedata <- fread(paste0(dataPath, "OutputFiles\\htstradedata_laceydeclarations_27Dec2021.csv"))
 
 
 #summarize yearly totals by hts10, with commodity descrip, retaining dec_req split
@@ -177,7 +177,8 @@ avg_multiyear_htstradedata <- yrlysum_htstradedata %>%
 
 #calculate most recent HTS2 for Ch. 44 total gen values by whether declaration is required  
 HTS2Ch44_yrlysum_htstradedata <- yrlysum_htstradedata %>%
-  filter(HTS2 == "44", year == "2020") %>%
+  filter(HTS2 == "44") %>%
+  summarize(year) %>%
   group_by(dec_req) %>%
   summarize(tot_gen_val_2020_by_hts2 = sum(tot_gen_val_by_hts10))
 
