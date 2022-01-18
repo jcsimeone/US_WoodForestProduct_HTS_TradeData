@@ -11,6 +11,7 @@ library(readxl)
 #library(lubridate)
 library(janitor)
 
+
 dataPath <- "C:\\Users\\simeo\\Desktop\\US_WoodForestProducts_Imports_HTS\\"
 
 
@@ -186,8 +187,8 @@ HTS2Ch44_yrlysum_htstradedata <- yrlysum_htstradedata %>%
   group_by(dec_req, year) %>%
   summarize(tot_gen_val_2020_by_hts2 = sum(tot_gen_val_by_hts10))
 
-tra_HTS2Ch4_yrlsum <-transpose(HTS2Ch44_yrlysum_htstradedata) 
-  
+#tra_HTS2Ch4_yrlsum <-transpose(HTS2Ch44_yrlysum_htstradedata) 
+#Convert long to wide  - use reshape2 package 
 
 Ch44_2020_totval <- sum(HTS2Ch44_yrlysum_htstradedata$tot_gen_val_2020_by_hts2)
 
