@@ -10,6 +10,7 @@ library(readxl)
 #library(stringr)
 #library(lubridate)
 library(janitor)
+options(scipen = 100)
 
 dataPath <- "C:\\Users\\simeo\\Desktop\\US_WoodForestProducts_Imports_HTS\\"
 
@@ -79,8 +80,8 @@ colnames(HTS_data_2015_2016_2017_2018_2019)[7]<-"district"
 colnames(HTS_data_2015_2016_2017_2018_2019)[8]<-"dist_name" 
 colnames(HTS_data_2015_2016_2017_2018_2019)[13]<-"unit_qy1" 
 
-HTS_data_2015_2016_2017_2018_2019$i_commodity <- as.character(HTS_data_2015_2016_2017_2018_2019$i_commodity)
-HTSdata2019_2020_2021$i_commodity <- as.character(HTSdata2019_2020_2021$i_commodity)
+#HTS_data_2015_2016_2017_2018_2019$i_commodity <- as.character(HTS_data_2015_2016_2017_2018_2019$i_commodity)
+#HTSdata2019_2020_2021$i_commodity <- as.character(HTSdata2019_2020_2021$i_commodity)
   as.character(HTSdata2019_2020_2021$i_commodity)
 
 # Compare initial 2019 data to updated 2019 prior to deleting older 2019 data
@@ -104,7 +105,7 @@ HTSdata2019_2020_2021$i_commodity <- as.character(HTSdata2019_2020_2021$i_commod
 ########## Bring in new data, preprocess to make sure column headings are the same, and delete older yearly data which will have been updated by new batch #####
   
   
-#Combina old and new data, deleting old 2019 data that will be replaced by new data
+#Combine old and new data, deleting old 2019 data that will be replaced by new data
   HTSdata2015_2016_2017_2018 <- HTS_data_2015_2016_2017_2018_2019 %>%
     filter(year != "2019")
   

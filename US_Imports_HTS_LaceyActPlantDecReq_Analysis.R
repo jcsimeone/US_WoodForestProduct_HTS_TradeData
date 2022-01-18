@@ -10,7 +10,8 @@ library(readxl)
 #library(stringr)
 #library(lubridate)
 library(janitor)
-
+library(reshape2)
+options(scipen = 100)
 
 dataPath <- "C:\\Users\\simeo\\Desktop\\US_WoodForestProducts_Imports_HTS\\"
 
@@ -182,13 +183,66 @@ avg_multiyear_htstradedata <- yrlysum_htstradedata %>%
 ## Work with Ch 44 data ##
 
 #calculate most recent HTS2 for Ch. 44 total gen values by whether declaration is required  
-HTS2Ch44_yrlysum_htstradedata <- yrlysum_htstradedata %>%
+Ch44_yrlysum_htstradedata <- yrlysum_htstradedata %>%
   filter(HTS2 == "44") %>%
   group_by(dec_req, year) %>%
-  summarize(tot_gen_val_2020_by_hts2 = sum(tot_gen_val_by_hts10))
+  summarize(tot_gen_val_2020_by_hts2 = sum(tot_gen_val_by_hts10)) %>%
+  ungroup() 
+  
+Ch44_yearly_tot <- Ch44_yrlysum_htstradedata %>%
+  group_by(year) %>%
+  summarize(tot_gen_val_2020_by_hts2 = sum(tot_gen_val_2020_by_hts2)) %>%
+  ungroup() %>%
+  mutate(dec_req = "yearly_tot")
+
+Ch44_yrlysum_htstradedata <- rbind(Ch44_yrlysum_htstradedata, Ch44_yearly_tot)
+Ch44_dec_req_summary <- spread(Ch44_yrlysum_htstradedata, year, tot_gen_val_2020_by_hts2)
+#rm(Ch44_yearly_tot, Ch44_yrlysum_htstradedata)
+
+## work with Ch. 94 data
+
+#calculate most recent HTS2 for Ch. 94 total gen values by whether declaration is required  
+Ch94_yrlysum_htstradedata <- yrlysum_htstradedata %>%
+  filter(HTS2 == "94") %>%
+  group_by(dec_req, year) %>%
+  summarize(tot_gen_val_2020_by_hts2 = sum(tot_gen_val_by_hts10)) %>%
+  ungroup() 
+
+Ch94_yearly_tot <- Ch94_yrlysum_htstradedata %>%
+  group_by(year) %>%
+  summarize(tot_gen_val_2020_by_hts2 = sum(tot_gen_val_2020_by_hts2)) %>%
+  ungroup() %>%
+  mutate(dec_req = "yearly_tot")
+
+Ch94_yrlysum_htstradedata <- rbind(Ch94_yrlysum_htstradedata, Ch94_yearly_tot)
+Ch94_dec_req_summary <- spread(Ch94_yrlysum_htstradedata, year, tot_gen_val_2020_by_hts2)
+#rm(Ch94_yearly_tot, Ch94_yrlysum_htstradedata)
+
+########### try doing all HTS2 together
+rm(dec_req_yrlysum_htstradedata, hts2_yearly_tot)
+dec_req_yrlysum_htstradedata <- yrlysum_htstradedata %>%
+  group_by(HTS2, dec_req, year) %>%
+  summarize(tot_gen_val_2020_by_hts2 = sum(tot_gen_val_by_hts10)) %>%
+  ungroup() 
+
+hts2_yearly_tot <- dec_req_yrlysum_htstradedata %>%
+  group_by(HTS2, year) %>%
+  summarize(tot_gen_val_2020_by_hts2 = sum(tot_gen_val_2020_by_hts2)) %>%
+  ungroup() %>%
+  mutate(dec_req = "yearly_tot")
+
+dec_req_yrlysum_htstradedata <- rbind(dec_req_yrlysum_htstradedata, hts2_yearly_tot)
+
+
+dec_req_yrlysum_htstradedata <- spread(dec_req_yrlysum_htstradedata, year, tot_gen_val_2020_by_hts2)
+
 
 #tra_HTS2Ch4_yrlsum <-transpose(HTS2Ch44_yrlysum_htstradedata) 
 #Convert long to wide  - use reshape2 package 
+#reshape_HTS2Ch44 <- dcast(HTS2Ch44_yrlysum_htstradedata, dec_req~year, value.var = "tot_gen_val_2020_by_hts2")
+
+#Use tidyverse to reshape long to wide format
+Ch44_dec_req_summary <- spread(HTS2Ch44_yrlysum_htstradedata, year, tot_gen_val_2020_by_hts2)
 
 Ch44_2020_totval <- sum(HTS2Ch44_yrlysum_htstradedata$tot_gen_val_2020_by_hts2)
 
