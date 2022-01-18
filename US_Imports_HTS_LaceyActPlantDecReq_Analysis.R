@@ -29,11 +29,11 @@ laceydeclarations <- read.csv(paste0(dataPath, "HTS_Chapters_Requiring_LaceyDecl
 #join the table that specifies whether PPQ505 form is required to the trade data
 # create columns in hts trade data representing 2, 4, 6, 8, and 10 digit codes
 htstradedata <- htstradedata %>%
-  mutate(HTS2 = substr(i_commodity, 1, 2),
-         HTS4 = substr(i_commodity, 1, 4),
-         HTS6 = substr(i_commodity, 1, 6),
-         HTS8 = substr(i_commodity, 1, 8),
-         HTS10 = substr(i_commodity, 1, 10)) %>%
+  mutate(HTS2 = as.character(substr(i_commodity, 1, 2)),
+         HTS4 = as.character(substr(i_commodity, 1, 4)),
+         HTS6 = as.character(substr(i_commodity, 1, 6)),
+         HTS8 = as.character(substr(i_commodity, 1, 8)),
+         HTS10 = as.character(substr(i_commodity, 1, 10))) %>%
   select(-i_commodity, -comm_lvl, -district, -cty_code)
 
 
@@ -121,14 +121,19 @@ htstradedata <- htstradedata %>%
 
 #write out combined data file for all years
 fwrite(htstradedata, 
-       paste0(dataPath, "OutputFiles\\htstradedata_laceydeclarations_27Dec2021.csv"), dateTimeAs = "write.csv")
+       paste0(dataPath, "OutputFiles\\htstradedata_laceydeclarations_18Jan2022.csv"), dateTimeAs = "write.csv")
 
 
 
 ##### Work with combined trade data, joined with Lacey Act declaration requirements #####
 ##### if bringing in already produced combined dataset to work with, then...#####
 
-htstradedata <- fread(paste0(dataPath, "OutputFiles\\htstradedata_laceydeclarations_27Dec2021.csv"))
+htstradedata <- fread(paste0(dataPath, "OutputFiles\\htstradedata_laceydeclarations_18Jan2022.csv")) %>%
+  mutate(HTS2 = as.character(HTS2),
+         HTS4 = as.character(HTS4), 
+         HTS6 = as.character(HTS6), 
+         HTS8 = as.character(HTS8), 
+         HTS10 = as.character(HTS10))
 
 
 #summarize yearly totals by hts10, with commodity descrip, retaining dec_req split
@@ -178,9 +183,11 @@ avg_multiyear_htstradedata <- yrlysum_htstradedata %>%
 #calculate most recent HTS2 for Ch. 44 total gen values by whether declaration is required  
 HTS2Ch44_yrlysum_htstradedata <- yrlysum_htstradedata %>%
   filter(HTS2 == "44") %>%
-  summarize(year) %>%
-  group_by(dec_req) %>%
+  group_by(dec_req, year) %>%
   summarize(tot_gen_val_2020_by_hts2 = sum(tot_gen_val_by_hts10))
+
+tra_HTS2Ch4_yrlsum <-transpose(HTS2Ch44_yrlysum_htstradedata) 
+  
 
 Ch44_2020_totval <- sum(HTS2Ch44_yrlysum_htstradedata$tot_gen_val_2020_by_hts2)
 
