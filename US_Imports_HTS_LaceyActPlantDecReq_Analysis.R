@@ -11,6 +11,7 @@ library(readxl)
 #library(lubridate)
 library(janitor)
 library(reshape2)
+library(writexl)
 options(scipen = 100)
 
 dataPath <- "C:\\Users\\simeo\\Desktop\\US_WoodForestProducts_Imports_HTS\\"
@@ -152,7 +153,7 @@ yrlysum_htstradedata <- htstradedata %>%
                                           substr(HTS10,5,6), ".",
                                           substr(HTS10,7,10)))
 
-
+################# Initial output dataframes to explore yearly summarized data (w/o exporter country info) #######################
 ################## Write out file for all 2020 HTS10
 yrlysum_htstradedata_2020<- yrlysum_htstradedata %>%
   filter(year == "2020") %>%
@@ -168,17 +169,12 @@ yrlysum_htstradedata_2021<- yrlysum_htstradedata %>%
 fwrite(yrlysum_htstradedata_2021, paste0(dataPath, "OutputFiles\\yrlysum_htstradedata_2021.csv"), dateTimeAs = "write.csv")
 
 
-
-
 #summarize average over full time series by hts10, with commodity descrip, retaining dec_req split
 # avg_multiyear_htstradedata <- yrlysum_htstradedata %>%
 #   group_by(dec_req, i_commodity_ldesc, HTS10, HTS8, HTS6, HTS4, HTS2, ExclusivelyContainsWood, Examples_from_CBP_CROSS) %>%
 #   summarize(avg_gen_val_by_hts10 = mean(tot_gen_val_by_hts10), 
 #             avg_con_val_by_hts10 = mean(tot_con_val_by_hts10))
 
-
-
-################ Create seprate data files for specific HTS Chapters ##############
 
 ## Work with Ch 44 data ##
 
@@ -219,6 +215,16 @@ Ch94_dec_req_summary <- spread(Ch94_yrlysum_htstradedata, year, tot_gen_val_2020
 rm(Ch94_yearly_tot, Ch94_yrlysum_htstradedata)
 
 
+################ Write all final data tables to tabs in one Excel file
+sheets <- list("Ch44_sum" = Ch44_dec_req_summary,
+               "Ch94_sum" = Ch94_dec_req_summary,
+               "2020_sum" = yrlysum_htstradedata_2020,
+               "2021_sum" = yrlysum_htstradedata_2021)
+write_xlsx(sheets, 
+           paste0(dataPath, "OutputFiles\\Preliminary_LaceyDecReq_Summary_18Jan2022.xlsx"))
+
+
+#################### Older analysis ###############################
 # Practice xonverting long to wide  - use reshape2 package and tidyverse
 #reshape_HTS2Ch44 <- dcast(HTS2Ch44_yrlysum_htstradedata, dec_req~year, value.var = "tot_gen_val_2020_by_hts2")
 #Use tidyverse to reshape long to wide format
