@@ -222,6 +222,41 @@ sheets <- list("Ch44_sum" = Ch44_dec_req_summary,
                "2021_sum" = yrlysum_htstradedata_2021)
 write_xlsx(sheets, 
            paste0(dataPath, "OutputFiles\\Preliminary_LaceyDecReq_Summary_18Jan2022.xlsx"))
+rm(sheets)
+
+############## Dataframe for specific year and retaining all country info 
+
+#summarize yearly totals by specific country, hts10, with commodity descrip, retaining dec_req split
+country_2020_htstradedata <- htstradedata %>%
+  filter(year == "2020") %>%
+  group_by(cty_name, dec_req, i_commodity_ldesc, HTS10, HTS8, HTS6, HTS4, HTS2, ExclusivelyContainsWood, ImplementationPhase, DeclarationFormRequiredBeginningDate) %>%
+  summarize(tot_gen_val_by_hts10 = sum(gen_val_mo), 
+            tot_con_val_by_hts10 = sum(con_val_mo)) %>%
+  ungroup() %>%
+  #add in column to compare value of "General US imports" to "US Imports for Consumption" (https://www.census.gov/foreign-trade/guide/sec2.html#gen_imports) 
+  mutate(diff_gen_val_minus_con_val = tot_gen_val_by_hts10 - tot_con_val_by_hts10) %>%
+  #add in column with link to CBP CROSS Database for each HTS10
+  mutate(Examples_from_CBP_CROSS = paste0("https://rulings.cbp.gov/search?term=", 
+                                          substr(HTS10,1,4), ".", 
+                                          substr(HTS10,5,6), ".",
+                                          substr(HTS10,7,10)))
+
+fwrite(yrlysum_htstradedata_2020, paste0(dataPath, "OutputFiles\\country_2020_htstradedata.csv"), dateTimeAs = "write.csv")
+
+################# Initial output dataframes to explore yearly summarized data (w/o exporter country info) #######################
+################## Write out file for all 2020 HTS10
+yrlysum_htstradedata_2020<- yrlysum_htstradedata %>%
+  filter(year == "2020") %>%
+  arrange(desc(tot_gen_val_by_hts10))
+
+fwrite(yrlysum_htstradedata_2020, paste0(dataPath, "OutputFiles\\yrlysum_htstradedata_2020.csv"), dateTimeAs = "write.csv")
+
+#write out file for all 2021 HTS10
+yrlysum_htstradedata_2021<- yrlysum_htstradedata %>%
+  filter(year == "2021") %>%
+  arrange(desc(tot_gen_val_by_hts10))
+
+fwrite(yrlysum_htstradedata_2021, paste0(dataPath, "OutputFiles\\yrlysum_htstradedata_2021.csv"), dateTimeAs = "write.csv")
 
 
 #################### Older analysis ###############################
