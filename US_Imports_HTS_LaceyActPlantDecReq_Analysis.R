@@ -24,7 +24,7 @@ htstradedata <- read.csv(paste0(dataPath, "OutputFiles\\Wood_HTS_2015_2016_2017_
 
 
 #read in list of codes to analyze (codes requiring PPQ 505 forms)
-laceydeclarations <- read.csv(paste0(dataPath, "HTS_Chapters_Requiring_LaceyDeclarationForm_Dec2021.csv"), stringsAsFactors = FALSE) %>%
+laceydeclarations <- read.csv(paste0(dataPath, "HTS_Chapters_Requiring_LaceyDeclarationForm_Jan2022.csv"), stringsAsFactors = FALSE) %>%
   mutate(DeclarationFormRequiredBeginningDate = as.POSIXct(DeclarationFormRequiredBeginningDate, format = "%m/%d/%Y"), 
          HTS_Codes = as.character(HTS_Codes))
 
@@ -141,7 +141,7 @@ htstradedata <- fread(paste0(dataPath, "OutputFiles\\htstradedata_laceydeclarati
 
 #summarize yearly totals by hts10, with commodity descrip, retaining dec_req split
 yrlysum_htstradedata <- htstradedata %>%
-  group_by(year, dec_req, i_commodity_ldesc, HTS10, HTS8, HTS6, HTS4, HTS2, ExclusivelyContainsWood, ImplementationPhase, DeclarationFormRequiredBeginningDate) %>%
+  group_by(year, dec_req, i_commodity_ldesc, HTS10, HTS8, HTS6, HTS4, HTS2, ExclusivelyContainsWood, ImplementationPhase, DeclarationFormRequiredBeginningDate, Gen_class) %>%
   summarize(tot_gen_val_by_hts10 = sum(gen_val_mo), 
             tot_con_val_by_hts10 = sum(con_val_mo)) %>%
   ungroup() %>%
@@ -229,7 +229,7 @@ rm(sheets)
 #summarize yearly totals by specific country, hts10, with commodity descrip, retaining dec_req split
 country_2020_htstradedata <- htstradedata %>%
   filter(year == "2020") %>%
-  group_by(cty_name, dec_req, i_commodity_ldesc, HTS10, HTS8, HTS6, HTS4, HTS2, ExclusivelyContainsWood, ImplementationPhase, DeclarationFormRequiredBeginningDate) %>%
+  group_by(cty_name, dec_req, i_commodity_ldesc, HTS10, HTS8, HTS6, HTS4, HTS2, ExclusivelyContainsWood, ImplementationPhase, DeclarationFormRequiredBeginningDate, Gen_class) %>%
   summarize(tot_gen_val_by_hts10 = sum(gen_val_mo), 
             tot_con_val_by_hts10 = sum(con_val_mo)) %>%
   ungroup() %>%
@@ -241,9 +241,10 @@ country_2020_htstradedata <- htstradedata %>%
                                           substr(HTS10,5,6), ".",
                                           substr(HTS10,7,10)))
 
-fwrite(yrlysum_htstradedata_2020, paste0(dataPath, "OutputFiles\\country_2020_htstradedata.csv"), dateTimeAs = "write.csv")
+fwrite(country_2020_htstradedata, paste0(dataPath, "OutputFiles\\allcountries_2020_htstradedata.csv"), dateTimeAs = "write.csv")
 
 ################# Initial output dataframes to explore yearly summarized data (w/o exporter country info) #######################
+
 ################## Write out file for all 2020 HTS10
 yrlysum_htstradedata_2020<- yrlysum_htstradedata %>%
   filter(year == "2020") %>%
