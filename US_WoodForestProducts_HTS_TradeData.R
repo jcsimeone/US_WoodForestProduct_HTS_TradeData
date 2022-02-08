@@ -14,7 +14,7 @@ options(scipen = 100)
 
 dataPath <- "C:\\Users\\simeo\\Desktop\\US_WoodForestProducts_Imports_HTS\\"
 
-#confirm or pre-process raw data file downloaded or recieved from US Census or International 
+#confirm or pre-process raw data file downloaded or received from US Census or International 
 #Trade Commission (ITC) so that the column headings have no spaces 
 #(e.g. use underscore instead of space)
 
@@ -55,7 +55,7 @@ rm(HTSdata2015, HTSdata2016, HTSdata2017, HTSdata2018, HTSdata2019, LateArrival_
 # write out combined 2015-2019 raw data
 fwrite(htstradedata, paste0(dataPath, "OutputFiles\\US_imports_wood_2015_2016_2017_2018_2019.csv"))
 
-######Preprocess and cCombine with US Census 2019+ data retrieved via API 
+######Preprocess and combine with US Census 2019+ data retrieved via API 
 
 #read in data file with  where quantities #and values are both 0
 
@@ -71,7 +71,7 @@ data.frame(HTSdata2019_2020_2021 = colnames(HTSdata2019_2020_2021), x = colnames
 colnames(HTSdata2019_2020_2021)
 colnames(HTS_data_2015_2016_2017_2018_2019)
 
-#standarize older 2015-2019 dataset so it resembles newer data pulled through Census API
+#standardize older 2015-2019 dataset so it resembles newer data pulled through Census API
 HTS_data_2015_2016_2017_2018_2019$comm_lvl <- "HS10"
 colnames(HTS_data_2015_2016_2017_2018_2019)[3]<-"i_commodity" 
 colnames(HTS_data_2015_2016_2017_2018_2019)[4]<-"i_commodity_ldesc" 
@@ -113,7 +113,7 @@ colnames(HTS_data_2015_2016_2017_2018_2019)[13]<-"unit_qy1"
 
 #write out full combined raw dataset 
   fwrite(Wood_HTS_2015_2016_2017_2018_2019_2020_2021, 
-         paste0(dataPath, "OutputFiles\\Wood_HTS_2015_2016_2017_2018_2019_2020_2021_27Dec2021.csv"))
+         paste0(dataPath, "OutputFiles\\Wood_HTS_2015_2016_2017_2018_2019_2020_2021_8Feb2022.csv"))
   
   
 rm(HTS_data_2015_2016_2017_2018_2019, HTSdata2015_2016_2017_2018, HTSdata2019_2020_2021, New2019_yrlysum_byhts, Old2019_yrlysum_byhts)  

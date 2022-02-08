@@ -19,7 +19,7 @@ dataPath <- "C:\\Users\\simeo\\Desktop\\US_WoodForestProducts_Imports_HTS\\"
 
 ########### Working with most updated combined data ##############  
 #read in raw US Census data
-htstradedata <- read.csv(paste0(dataPath, "OutputFiles\\Wood_HTS_2015_2016_2017_2018_2019_2020_2021_27Dec2021.csv"), stringsAsFactors = FALSE) %>%
+htstradedata <- read.csv(paste0(dataPath, "OutputFiles\\Wood_HTS_2015_2016_2017_2018_2019_2020_2021_8Feb2022.csv"), stringsAsFactors = FALSE) %>%
   mutate(i_commodity = as.character(i_commodity))
 
 
@@ -124,14 +124,14 @@ htstradedata <- htstradedata %>%
 
 #write out combined data file for all years
 fwrite(htstradedata, 
-       paste0(dataPath, "OutputFiles\\htstradedata_laceydeclarations_18Jan2022.csv"), dateTimeAs = "write.csv")
+       paste0(dataPath, "OutputFiles\\htstradedata_laceydeclarations_8Feb2022.csv"), dateTimeAs = "write.csv")
 
 
 
 ##### Work with combined trade data, joined with Lacey Act declaration requirements #####
 ##### if bringing in already produced combined dataset to work with, then...#####
 
-htstradedata <- fread(paste0(dataPath, "OutputFiles\\htstradedata_laceydeclarations_18Jan2022.csv")) %>%
+htstradedata <- fread(paste0(dataPath, "OutputFiles\\htstradedata_laceydeclarations_8Feb2022.csv")) %>%
   mutate(HTS2 = as.character(HTS2),
          HTS4 = as.character(HTS4), 
          HTS6 = as.character(HTS6), 
@@ -176,8 +176,6 @@ fwrite(yrlysum_htstradedata_2021, paste0(dataPath, "OutputFiles\\yrlysum_htstrad
 #             avg_con_val_by_hts10 = mean(tot_con_val_by_hts10))
 
 
-## Work with Ch 44 data ##
-
 #calculate most recent HTS2 for Ch. 44 total gen values by whether declaration is required  
 Ch44_yrlysum_htstradedata <- yrlysum_htstradedata %>%
   filter(HTS2 == "44") %>%
@@ -194,8 +192,6 @@ Ch44_yearly_tot <- Ch44_yrlysum_htstradedata %>%
 Ch44_yrlysum_htstradedata <- rbind(Ch44_yrlysum_htstradedata, Ch44_yearly_tot)
 Ch44_dec_req_summary <- spread(Ch44_yrlysum_htstradedata, year, tot_gen_val_2020_by_hts2)
 rm(Ch44_yearly_tot, Ch44_yrlysum_htstradedata)
-
-## work with Ch. 94 data
 
 #calculate most recent HTS2 for Ch. 94 total gen values by whether declaration is required  
 Ch94_yrlysum_htstradedata <- yrlysum_htstradedata %>%
@@ -214,21 +210,56 @@ Ch94_yrlysum_htstradedata <- rbind(Ch94_yrlysum_htstradedata, Ch94_yearly_tot)
 Ch94_dec_req_summary <- spread(Ch94_yrlysum_htstradedata, year, tot_gen_val_2020_by_hts2)
 rm(Ch94_yearly_tot, Ch94_yrlysum_htstradedata)
 
+#calculate most recent HTS2 for Ch. 47 total gen values by whether declaration is required  
+Ch47_yrlysum_htstradedata <- yrlysum_htstradedata %>%
+  filter(HTS2 == "47") %>%
+  group_by(dec_req, year) %>%
+  summarize(tot_gen_val_2020_by_hts2 = sum(tot_gen_val_by_hts10)) %>%
+  ungroup() 
+
+Ch47_yearly_tot <- Ch47_yrlysum_htstradedata %>%
+  group_by(year) %>%
+  summarize(tot_gen_val_2020_by_hts2 = sum(tot_gen_val_2020_by_hts2)) %>%
+  ungroup() %>%
+  mutate(dec_req = "yearly_tot")
+
+Ch47_yrlysum_htstradedata <- rbind(Ch47_yrlysum_htstradedata, Ch47_yearly_tot)
+Ch47_dec_req_summary <- spread(Ch47_yrlysum_htstradedata, year, tot_gen_val_2020_by_hts2)
+rm(Ch47_yearly_tot, Ch47_yrlysum_htstradedata)
+
+#calculate most recent HTS2 for Ch. 48 total gen values by whether declaration is required  
+Ch48_yrlysum_htstradedata <- yrlysum_htstradedata %>%
+  filter(HTS2 == "48") %>%
+  group_by(dec_req, year) %>%
+  summarize(tot_gen_val_2020_by_hts2 = sum(tot_gen_val_by_hts10)) %>%
+  ungroup() 
+
+Ch48_yearly_tot <- Ch48_yrlysum_htstradedata %>%
+  group_by(year) %>%
+  summarize(tot_gen_val_2020_by_hts2 = sum(tot_gen_val_2020_by_hts2)) %>%
+  ungroup() %>%
+  mutate(dec_req = "yearly_tot")
+
+Ch48_yrlysum_htstradedata <- rbind(Ch48_yrlysum_htstradedata, Ch48_yearly_tot)
+Ch48_dec_req_summary <- spread(Ch48_yrlysum_htstradedata, year, tot_gen_val_2020_by_hts2)
+rm(Ch48_yearly_tot, Ch48_yrlysum_htstradedata)
 
 ################ Write all final data tables to tabs in one Excel file
 sheets <- list("Ch44_sum" = Ch44_dec_req_summary,
                "Ch94_sum" = Ch94_dec_req_summary,
+               "Ch47_sum" = Ch47_dec_req_summary,
+               "Ch48_sum" = Ch48_dec_req_summary,
                "2020_sum" = yrlysum_htstradedata_2020,
                "2021_sum" = yrlysum_htstradedata_2021)
 write_xlsx(sheets, 
-           paste0(dataPath, "OutputFiles\\Preliminary_LaceyDecReq_Summary_18Jan2022.xlsx"))
+           paste0(dataPath, "OutputFiles\\LaceyDecReq_Summary_8Feb2022.xlsx"))
 rm(sheets)
 
 ############## Dataframe for specific year and retaining all country info 
 
 #summarize yearly totals by specific country, hts10, with commodity descrip, retaining dec_req split
-country_2020_htstradedata <- htstradedata %>%
-  filter(year == "2020") %>%
+country_2021_htstradedata <- htstradedata %>%
+  filter(year == "2021") %>%
   group_by(cty_name, dec_req, i_commodity_ldesc, HTS10, HTS8, HTS6, HTS4, HTS2, ExclusivelyContainsWood, ImplementationPhase, DeclarationFormRequiredBeginningDate, Gen_class) %>%
   summarize(tot_gen_val_by_hts10 = sum(gen_val_mo), 
             tot_con_val_by_hts10 = sum(con_val_mo)) %>%
@@ -241,7 +272,7 @@ country_2020_htstradedata <- htstradedata %>%
                                           substr(HTS10,5,6), ".",
                                           substr(HTS10,7,10)))
 
-fwrite(country_2020_htstradedata, paste0(dataPath, "OutputFiles\\allcountries_2020_htstradedata.csv"), dateTimeAs = "write.csv")
+fwrite(country_2021_htstradedata, paste0(dataPath, "OutputFiles\\allcountries_2021_htstradedata.csv"), dateTimeAs = "write.csv")
 
 ################# Initial output dataframes to explore yearly summarized data (w/o exporter country info) #######################
 

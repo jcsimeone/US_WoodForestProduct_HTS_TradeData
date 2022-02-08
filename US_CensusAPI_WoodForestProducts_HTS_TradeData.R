@@ -63,7 +63,7 @@ library(janitor)
 
 
 ######### Test calling Census api through R (using httr) and convert matrix to data frame w/ first row as column headings
-url <-"https://api.census.gov/data/timeseries/intltrade/imports/hs?key=6a6b224a3057a174ebd5cd67109f2f4800d270a9&get=MONTH%2CI_COMMODITY_LDESC%2CDISTRICT%2CCTY_CODE%2CCTY_NAME%2CDIST_NAME%2CGEN_VAL_MO%2CCON_VAL_MO%2CGEN_QY1_MO%2CCON_QY1_MO%2CUNIT_QY1&YEAR=2021&COMM_LVL=HS10&I_COMMODITY=9620005500%2A"
+url <-"https://api.census.gov/data/timeseries/intltrade/imports/hs?key=6a6b224a3057a174ebd5cd67109f2f4800d270a9&get=MONTH%2CI_COMMODITY_LDESC%2CDISTRICT%2CCTY_CODE%2CCTY_NAME%2CDIST_NAME%2CGEN_VAL_MO%2CCON_VAL_MO%2CGEN_QY1_MO%2CCON_QY1_MO%2CUNIT_QY1&YEAR=2021&COMM_LVL=HS10&I_COMMODITY=940330%2A"
 batch <- httr::GET(url)
 #cont_raw <- httr::content(batch)
 #str(cont_raw, max.level = 3, list.len = 4)
@@ -76,7 +76,7 @@ df_batch_raw <- as.data.frame(batch_raw)
 df_batch_raw_col <- row_to_names(df_batch_raw, row_number =1)
 
 
-########Test to Loop through to bring in batches of all data in Ch. 44 for 2019, 2020, 2021
+########Census API Retrieval: Loop to bring in batches of HTS covering wood and forest products for 2019, 2020, 2021
 
 #files <- list.files(inputPath)
 
