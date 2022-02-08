@@ -1,0 +1,66 @@
+HTS_Codes,ExampleDescription,ImplementationPhase,DeclarationFormRequiredBeginningDate,ExclusionsNoDecReq,ExclusivelyContainsWood,Gen_class
+4401,Fuel wood,2,4/1/2009,0,1,Solid wood
+4402,Wood charcoal,3,10/1/2009,0,1,Solid wood
+4403,Wood in the rough,2,4/1/2009,0,1,Solid wood
+4404,"Hoopwood; poles, piles, stakes",2,4/1/2009,0,1,Solid wood
+4406,Railway or tramway sleepers,2,4/1/2009,0,1,Solid wood
+4407,Wood sawn or chipped lengthwise,2,4/1/2009,0,1,Solid wood
+4408,Sheets for veneering,2,4/1/2009,0,1,Solid wood
+4409,Wood continuously shaped,2,4/1/2009,0,1,Solid wood
+4412,"Plywood, veneered panels",3,10/1/2009,0,1,Solid wood
+44129906,"Plywood nesoi,veneered panel & similar laminated wood w/nonconiferous outer ply, at least one layer of particle board",3,,1,1,Solid wood
+44129957,"Plywood/veneered panel/sim. laminated wood nesoi, softwood outer plies, least one ply tropical hardwood, least one layer of particle board",3,,1,1,Solid wood
+4414,Wooden frames,3,10/1/2009,0,1,Solid wood
+4416003010,"new casks, barrels, and parts of wood",5,8/6/2015,0,1,Solid wood
+4416003020,used assembled casks of wood,5,8/6/2015,0,1,Solid wood
+4416003030,used unassembled casks of wood,5,8/6/2015,0,1,Solid wood
+4416006010,new barrel staves of wood,5,8/6/2015,0,1,Solid wood
+4416006020,new barrel hoops of softwood,5,8/6/2015,0,1,Solid wood
+4416006030,new tight barrelheads of wood,5,8/6/2015,0,1,Solid wood
+4416006040,used barrels staves of softwood,5,8/6/2015,0,1,Solid wood
+4416006050,"used hoops, tight barrelheads of softwood",5,8/6/2015,0,1,Solid wood
+4416009020,"new other casks, barrels, wood",5,8/6/2015,0,1,Solid wood
+4416009040,"used other cooper goods, wood",5,8/6/2015,0,1,Solid wood
+4417,"Tools, tool handles, broom handles",2,4/1/2009,0,1,Solid wood
+4418,Builders’ joinery and carpentry of wood,2,4/1/2009,0,1,Solid wood
+4419,Tableware & kitchenware of wood,3,10/1/2009,0,1,Solid wood
+4420,"Wood marquetry, caskets, statuettes",3,10/1/2009,0,1,Solid wood
+4421,Other articles of wood,4,4/1/2010,0,1,Solid wood
+6602,"Walking sticks, whips, crops",4,4/1/2010,0,0,Specialty
+8201,Hand tools,4,4/1/2010,0,0,Specialty
+8211926000,hunting knives with wood handles,5,8/6/2015,0,1,Specialty
+8215992400,table barbeque forks with wood handles,5,8/6/2015,0,1,Specialty
+9201,Pianos,4,4/1/2010,0,1,Musical instruments
+9202,Other stringed instruments,4,4/1/2010,0,1,Musical instruments
+9302,Revolvers and pistols,4,4/1/2010,0,0,Specialty
+93051020,Parts and accessories for revolvers and pistols,4,4/1/2010,0,0,Specialty
+9401612010,"upholstered teak chair, household",5,8/6/2015,0,1,Wooden furniture
+9401612030,"upholstered teak chairs, other",5,8/6/2015,0,1,Wooden furniture
+940169,Seats with wood frames,5,8/6/2015,0,1,Wooden furniture
+9401901500,parts of bent-wood seats,5,8/6/2015,0,1,Wooden furniture
+9403304000,bent-wood office furniture,5,8/6/2015,0,1,Wooden furniture
+9403404000,bent-wood kitchen furniture,5,8/6/2015,0,1,Wooden furniture
+9403504000,bent-wood bedroom furniture,5,8/6/2015,0,1,Wooden furniture
+9403604000,other bent-wood furniture,5,8/6/2015,0,1,Wooden furniture
+950420,Articles and accessories for billiards,4,4/1/2010,0,0,Specialty
+9614002100,rough wood blocks for smoking pipe manufacture,5,8/6/2015,0,1,Specialty
+9703,Sculptures,4,4/1/2010,0,0,Specialty
+3301295109,essential oils of cedarwood,6,10/1/2021,0,1,Essential oil
+3301295121,essential oils of linaloe or bois de rose,6,10/1/2021,0,1,Essential oil
+3301295139,essential oils of sandalwood,6,10/1/2021,0,1,Essential oil
+4202292000,"Handbags, of Materials Wholly Or Mainly Covered With Paper, Of Wood",6,10/1/2021,0,1,"Handbags, luggage, trunks, cases"
+4202992000,"Trunks, Cases, Suitcases - other, of wood, not lined",6,10/1/2021,0,1,"Handbags, luggage, trunks, cases"
+4202993000,"Trunks, Cases, Suitcases - other, of wood, lined",6,10/1/2021,0,1,"Handbags, luggage, trunks, cases"
+441012,oriented strand board (OSB),6,10/1/2021,0,1,Solid wood
+4415,"cases, boxes, crates, drums, containers, pallets, box-pallets, etc.",6,10/1/2021,0,1,Solid wood
+9205902000,wind musical instruments: bagpipes,6,10/1/2021,0,1,Musical instruments
+9205904020,clarinets,6,10/1/2021,0,1,Musical instruments
+9205904080,other (woodwind instruments),6,10/1/2021,0,0,Musical instruments
+9205904060,flutes and piccolos,6,10/1/2021,0,0,Musical instruments
+9206002000,drums,6,10/1/2021,0,0,Musical instruments
+9207900040,"musical instruments, the sound of which is produced, or must be amplified, electrically (for example, organs, guitars, accordions): fretted string instruments",6,10/1/2021,0,0,Musical instruments
+920992,parts and accessories for musical instruments of heading 9202,6,10/1/2021,0,0,Musical instruments
+9209992000,parts and accessories for bagpipes,6,10/1/2021,0,0,Musical instruments
+9209994040,parts and accessories for other woodwind instruments,6,10/1/2021,0,0,Musical instruments
+9209998000,"parts and accessories for musical instruments of heading 9202, other",6,10/1/2021,0,0,Musical instruments
+9620005500,"monopods, bipods, tripods and similar articles of wood",6,10/1/2021,0,1,Specialty
