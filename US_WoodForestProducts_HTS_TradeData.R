@@ -111,9 +111,14 @@ colnames(HTS_data_2015_2016_2017_2018_2019)[13]<-"unit_qy1"
   
   Wood_HTS_2015_2016_2017_2018_2019_2020_2021 <- rbind(HTSdata2015_2016_2017_2018, HTSdata2019_2020_2021)
 
+#Standarize country capitalization issues between datasets
+  Wood_HTS_2015_2016_2017_2018_2019_2020_2021 <- Wood_HTS_2015_2016_2017_2018_2019_2020_2021 %>%
+    mutate(i_commodity = as.character(i_commodity), 
+         cty_name = str_to_title(cty_name))
+  
 #write out full combined raw dataset 
   fwrite(Wood_HTS_2015_2016_2017_2018_2019_2020_2021, 
-         paste0(dataPath, "OutputFiles\\Wood_HTS_2015_2016_2017_2018_2019_2020_2021_8Feb2022.csv"))
+         paste0(dataPath, "OutputFiles\\Wood_HTS_2015_2016_2017_2018_2019_2020_2021_9Feb2022.csv"))
   
   
 rm(HTS_data_2015_2016_2017_2018_2019, HTSdata2015_2016_2017_2018, HTSdata2019_2020_2021, New2019_yrlysum_byhts, Old2019_yrlysum_byhts)  
