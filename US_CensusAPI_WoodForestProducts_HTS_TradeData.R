@@ -63,7 +63,7 @@ library(janitor)
 
 
 ######### Test calling Census api through R (using httr) and convert matrix to data frame w/ first row as column headings
-url <-"https://api.census.gov/data/timeseries/intltrade/imports/hs?key=6a6b224a3057a174ebd5cd67109f2f4800d270a9&get=MONTH%2CI_COMMODITY_LDESC%2CDISTRICT%2CCTY_CODE%2CCTY_NAME%2CDIST_NAME%2CGEN_VAL_MO%2CCON_VAL_MO%2CGEN_QY1_MO%2CCON_QY1_MO%2CUNIT_QY1&YEAR=2021&COMM_LVL=HS10&I_COMMODITY=940330%2A"
+url <-"https://api.census.gov/data/timeseries/intltrade/imports/hs?key=6a6b224a3057a174ebd5cd67109f2f4800d270a9&get=MONTH%2CI_COMMODITY_LDESC%2CDISTRICT%2CCTY_CODE%2CCTY_NAME%2CDIST_NAME%2CGEN_VAL_MO%2CCON_VAL_MO%2CGEN_QY1_MO%2CCON_QY1_MO%2CUNIT_QY1&YEAR=2022&COMM_LVL=HS10&I_COMMODITY=940330%2A"
 batch <- httr::GET(url)
 #cont_raw <- httr::content(batch)
 #str(cont_raw, max.level = 3, list.len = 4)
@@ -87,7 +87,7 @@ for(hts in wood_hts_to_query$HS){
  print(hts)
   
   #inner loop cycling through years 
-  for(year in 2019:2021){
+  for(year in 2022:2022){
     print(year)
     i=i+1
     
@@ -123,7 +123,7 @@ for(hts in wood_hts_to_query$HS){
 
 }
 
-fwrite(compiled, paste0(dataPath, "US_imports_wood_2019_2020_2021.csv"))
+fwrite(compiled, paste0(dataPath, "US_imports_wood_2022.csv"))
 
 
 
